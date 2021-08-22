@@ -7,21 +7,32 @@ const caver = new CaverExtKAS(
   apiKey.accessKeyId,
   apiKey.secretAccessKey,
 );
-const query = {
-  // kind: [caver.kas.tokenHistory.queryOptions.kind.NFT],
-  size: 1,
-  // range: '1593529200,1599145200',
-  //   caFilter: '0xbbe63781168c9e67e7a8b112425aa84c479f39aa',
-};
+const abi = require('./abi.json');
+
 (async () => {
-  const result = await caver.kas.tokenHistory.getTransferHistoryByAccount(
-    '0x1527ac4118a56bd17a5136d73d3999c6b7f8d0d1',
-    query,
+  const myContract = new caver.klay.Contract(
+    abi,
+    '0xc6a2ad8cc6e4a7e08fc37cc5954be07d499e7654',
   );
-  console.log(result.items[0].transaction);
-  const x = await caver.kas.tokenHistory.getTransferHistoryByTxHash(
-    result.items[0].transactionHash,
+  await myContract.getPastEvents(
+    'ExchangePos',
+    {
+      // filter: {},
+      //필터링이 안되지 왜
+      // indexed parameter가 아니라서!
+      fromBlock: 67915000,
+      toBlock: 'latest',
+    },
+    function (err, events) {
+      console.log(
+        events.filter(
+          (e) =>
+            e.returnValues.tokenA ===
+              '0xF4546E1D3aD590a3c6d178d671b3bc0e8a81e27d' ||
+            e.returnValues.tokenB ===
+              '0xF4546E1D3aD590a3c6d178d671b3bc0e8a81e27d',
+        ),
+      );
+    },
   );
-  //   console.log(result);
-  //   console.log(x.items);
 })();

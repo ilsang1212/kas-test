@@ -255,5 +255,28 @@
     ],
     "name": "Approval",
     "type": "event"
+  },
+  {
+    "name": "ExchangePos",
+    "anonymous": false,
+    "type": "event",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "tokenA"
+      },
+      {
+        "type": "uint256",
+        "name": "amountA"
+      },
+      {
+        "type": "address",
+        "name": "tokenB"
+      },
+      {
+        "type": "uint256",
+        "name": "amountB"
+      }
+    ]
   }
 ]
